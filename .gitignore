@@ -1,0 +1,18 @@
+# Ignore dependencies
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Ignore build files
+dist/
+build/
+.out/
+.next/
+.vite/
+
+# Ignore editor/system files
+.DS_Store
+*.log
+npm-debug.log*
+.env
