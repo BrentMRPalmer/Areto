@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Monitor, User } from "lucide-react"
+import { MessageSquare, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function Navbar() {
@@ -7,7 +7,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="flex h-16 items-center justify-between pl-16 pr-48">
         {/* Logo */}
         <Link to="/" className="text-xl font-semibold">
           Areto
@@ -18,14 +18,21 @@ export function Navbar() {
           <Link to="/classes" className="text-sm font-medium">
             Classes
           </Link>
+          <Link to="/clubs" className="text-sm font-medium">
+            Clubs
+          </Link>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon">
-              <Monitor className="h-5 w-5" />
-              <span className="sr-only">Monitor view</span>
+            <Button asChild variant="ghost" size="icon">
+              <Link to="/messages">
+                <MessageSquare className="h-5 w-5" />
+                <span className="sr-only">Messages</span>
+              </Link>
             </Button>
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-              <span className="sr-only">User profile</span>
+            <Button asChild variant="ghost" size="icon">
+              <Link to="/profile">
+                <User className="h-5 w-5" />
+                <span className="sr-only">User profile</span>
+              </Link>
             </Button>
           </div>
         </div>
