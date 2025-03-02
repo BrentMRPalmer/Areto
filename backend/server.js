@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import authRoutes from "./routes/auth.js"
+import studentRoutes from "./routes/studentRoutes.js"
 
 // Creates an Express server instance
 const app = express();
@@ -26,7 +26,7 @@ mongoose.connect(MONGO_URI, {dbName: "areto"})
     })
 
 // Routes
-app.use("/api", authRoutes); // Register the auth routes
+app.use("/api", studentRoutes); // Register the student routes
 
 
 
