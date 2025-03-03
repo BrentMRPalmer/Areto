@@ -1,0 +1,10 @@
+/* Reduce space between list items and code blocks */
+.md-typeset li > pre, .md-typeset li > div > pre {
+    margin-top: 0;  /* Remove top margin */
+    margin-bottom: 0; /* Remove bottom margin */
+}
+
+/* Reduce margin after bold text */
+.md-typeset strong {
+    margin-bottom: 0;
+}

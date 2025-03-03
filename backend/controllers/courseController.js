@@ -11,7 +11,7 @@ export const createCourse = async (req, res) => {
     // Save student to MongoDB
     await newCourse.save();
 
-    res.status(201).json({ message: "Course successfully!" });
+    res.status(201).json({ message: "Course created successfully!" });
   } catch (error) {
     res.status(500).json({ error: "Error creating course", details: error.message });
   }
