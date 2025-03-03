@@ -19,7 +19,13 @@ theme:
 nav:
   - Home: index.md
   - Quick Start: quick_start.md
-  - API Reference: api_reference/api_reference.md
+  - API Reference:
+    - Overview: api_reference/overview.md
+    - Student:  api_reference/student.md
+    - Course:  api_reference/course.md
+    - Section: api_reference/section.md
+    - Pool:  api_reference/pool.md
+    - Group:  api_reference/group.md
 
 extra_css:
   - overrides/custom.css
