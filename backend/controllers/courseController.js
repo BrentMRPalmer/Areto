@@ -8,7 +8,7 @@ export const createCourse = async (req, res) => {
     // Create new course
     const newCourse = new Course({ code, institution, name });
 
-    // Save student to MongoDB
+    // Save course to MongoDB
     await newCourse.save();
 
     res.status(201).json({ message: "Course created successfully!" });

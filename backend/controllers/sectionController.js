@@ -7,7 +7,7 @@ export const createSection = async (req, res) => {
 
         // Verify the course exists
         const verifiedCourse = await Course.findById(course);
-        if (!course) {
+        if (!verifiedCourse) {
             return res.status(404).json({ error: "Course not found" });
         }
 

@@ -11,7 +11,7 @@ const sectionSchema = new mongoose.Schema({
             message: "numStudents must be an integer."
         }
     },
-    course: { type: mongoose.Schema.Types.ObjectId, ref: "Course"}
+    course: { type: mongoose.Schema.Types.ObjectId, ref: "Course", required: true }
 }, { timestamps: true })
 
 sectionSchema.index({ code: 1, term: 1, professor: 1, course: 1 }, { unique: true })
