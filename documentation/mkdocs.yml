@@ -1,0 +1,22 @@
+site_name: Areto Documentation
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: brown
+      accent: deep orange
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: brown
+      accent: deep orange
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Quick Start: quick_start.md
+  - API Reference: api_reference/api_reference.md

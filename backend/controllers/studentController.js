@@ -1,4 +1,4 @@
-import { Student } from "../models/index.js";
+import { Student, Course } from "../models/index.js";
 
 // Register a new student
 export const registerStudent = async (req, res) => {
@@ -16,3 +16,31 @@ export const registerStudent = async (req, res) => {
     res.status(500).json({ error: "Error registering student", details: error.message });
   }
 };
+
+// Enroll a student into a course
+export const enrollInCourse = async (req, res) => {
+  try {
+    const { studentId, courseId } = req.body;
+
+    // Verify the course exists
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    // Find the student, and update enrolledCourses
+    const student = await Student.findByIdAndUpdate(
+      studentId,
+      { $addToSet: {enrolledCourses: courseId }},
+      { new: true }
+    ).populate("enrolledCourses"); // Populate replaces courseIds with course objects
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    res.status(200).json({ message: "Enrollment successful", student });
+  } catch (error) {
+    res.status(500).json({ error: "Error enrolling in course", details: error.message });
+  }
+}
