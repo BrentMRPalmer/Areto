@@ -1,4 +1,4 @@
-import { Student } from "../models/index.js"; // Import from index.js
+import { Student } from "../models/index.js";
 
 // Register a new student
 export const registerStudent = async (req, res) => {

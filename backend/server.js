@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import studentRoutes from "./routes/studentRoutes.js"
+import courseRoutes from "./routes/courseRoutes.js"
 
 // Creates an Express server instance
 const app = express();
@@ -26,7 +27,7 @@ mongoose.connect(MONGO_URI, {dbName: "areto"})
     })
 
 // Routes
-app.use("/api", studentRoutes); // Register the student routes
-
+app.use("/api/students", studentRoutes);
+app.use("/api/courses", courseRoutes); 
 
 
