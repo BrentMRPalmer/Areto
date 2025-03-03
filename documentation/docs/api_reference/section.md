@@ -7,7 +7,7 @@ Describes the endpoints available for the `Section` model.
 Creates a new section in the database.
 
 - **Method**: <code>POST</code>
-- **Endpoint**: <code>/api/sections/</code>
+- **Endpoint**: <code>/api/sections</code>
 - **Content-Type**: <code>application/json</code>
 - **Request Body**: <pre> <code> {
   "code": "A",

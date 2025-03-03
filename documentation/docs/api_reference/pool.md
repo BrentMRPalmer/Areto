@@ -7,7 +7,7 @@ Describes the endpoints available for the `Pool` model.
 Creates a new pool in the database.
 
 - **Method**: <code>POST</code>
-- **Endpoint**: <code>/api/pools/</code>
+- **Endpoint**: <code>/api/pools</code>
 - **Content-Type**: <code>application/json</code>
 - **Request Body**: <pre> <code> {
   "name": "GA and PD Group",

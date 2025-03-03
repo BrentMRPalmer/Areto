@@ -1,5 +1,4 @@
 import { Pool, Course, Section } from "../models/index.js";
-import mongoose from "mongoose";
 
 // Create a new pool
 export const createPool = async (req, res) => {
@@ -14,7 +13,7 @@ export const createPool = async (req, res) => {
 
         // Verify the section exists
         if (section) {
-            const verifiedSection = await Section.findById(new mongoose.Types.ObjectId(section));
+            const verifiedSection = await Section.findById(section);
             if (!verifiedSection) {
                 return res.status(404).json({ error: "Section not found" });
             }

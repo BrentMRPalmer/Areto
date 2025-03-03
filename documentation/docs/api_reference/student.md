@@ -7,7 +7,7 @@ Describes the endpoints available for the `Student` model.
 Registers a new student in the database.
 
 - **Method**: <code>POST</code>
-- **Endpoint**: <code>/api/students/</code>
+- **Endpoint**: <code>/api/students</code>
 - **Content-Type**: <code>application/json</code>
 - **Request Body**: <pre> <code> {
     "firstName": "John",

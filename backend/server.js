@@ -5,6 +5,7 @@ import studentRoutes from "./routes/studentRoutes.js"
 import courseRoutes from "./routes/courseRoutes.js"
 import sectionRoutes from "./routes/sectionRoutes.js"
 import poolRoutes from "./routes/poolRoutes.js"
+import groupRoutes from "./routes/groupRoutes.js"
 
 // Creates an Express server instance
 const app = express();
@@ -33,4 +34,5 @@ app.use("/api/students", studentRoutes);
 app.use("/api/courses", courseRoutes);
 app.use("/api/sections", sectionRoutes);
 app.use("/api/pools", poolRoutes);
+app.use("/api/groups", groupRoutes);
 
