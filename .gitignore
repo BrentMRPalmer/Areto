@@ -16,3 +16,6 @@ build/
 *.log
 npm-debug.log*
 .env
+
+# Ignore python venv
+/documentation/venv
