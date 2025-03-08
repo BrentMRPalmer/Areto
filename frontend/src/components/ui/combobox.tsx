@@ -21,12 +21,12 @@ import { FormDataItem } from "@/types/form";
 type ComboboxProps = {
   data: FormDataItem[];
   label: string;
-  onChange: ({label, value}: FormDataItem) => void;
+  onChange: ({ label, value }: FormDataItem) => void;
 };
 
 export function Combobox({ data, label, onChange }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [currentValue, setCurrentValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -37,8 +37,8 @@ export function Combobox({ data, label, onChange }: ComboboxProps) {
           aria-expanded={open}
           className="w-full justify-between p-5"
         >
-          {value
-            ? data.find((item) => item.value === value)?.label
+          {currentValue
+            ? data.find((item) => item.value === currentValue)?.label
             : `Select ${label}...`}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -52,17 +52,19 @@ export function Combobox({ data, label, onChange }: ComboboxProps) {
               {data.map((item) => (
                 <CommandItem
                   key={item.value}
-                  value={item.value}
-                  onSelect={(currentValue) => {
-                    setValue(currentValue === value ? "" : currentValue);
+                  value={item.label}
+                  onSelect={(selectedValue: string) => {
+                    setCurrentValue(
+                      selectedValue === currentValue ? "" : currentValue
+                    );
                     setOpen(false);
-                    onChange({label: label, value: item.value})
+                    onChange({ label: label, value: item.value });
                   }}
                 >
                   <Check
                     className={cn(
                       "mr-2 h-4 w-4",
-                      value === item.value ? "opacity-100" : "opacity-0"
+                      currentValue === item.value ? "opacity-100" : "opacity-0"
                     )}
                   />
                   {item.label}

@@ -20,7 +20,6 @@ const Register = () => {
   // Handle input changes
   const handleChange = ({ label, value }: FormDataItem) => {
     setFormData({ ...formData, [label]: value });
-    console.log(formData);
   };
 
   // Handle form submission
