@@ -34,7 +34,7 @@ const Classes = () => {
         </h3>
         <h3>[Search Placeholder]</h3>
       </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl w-full mx-auto">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto">
         {dummyCourses.map((course) => (
           <Card>
             <CardHeader>
@@ -42,10 +42,10 @@ const Classes = () => {
               <CardDescription>{course.name}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>Card Content</p>
+              <p></p>
             </CardContent>
             <CardFooter>
-              <p>Card Footer</p>
+              <p>1 Joined Group</p>
             </CardFooter>
           </Card>
         ))}
