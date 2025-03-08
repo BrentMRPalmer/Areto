@@ -1,17 +1,22 @@
 import { useState } from "react";
+import { Combobox } from "@/components/ui/combobox";
 
 const Register = () => {
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
     username: "",
     email: "",
-    password: ""
+    password: "",
+    institution: "",
   });
 
   const [message, setMessage] = useState("");
 
   // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = ({ label, value }: { label: string; value: string }) => {
+    setFormData({ ...formData, [label]: value });
+    console.log(formData);
   };
 
   // Handle form submission
@@ -19,16 +24,23 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/register", {
+      const response = await fetch(`http://localhost:3000/api/students`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
       if (response.ok) {
         setMessage("User registered successfully!");
-        setFormData({ username: "", email: "", password: "" }); // Clear form
+        setFormData({
+          firstName: "",
+          lastName: "",
+          username: "",
+          email: "",
+          password: "",
+          institution: "",
+        }); // Clear form
       } else {
         setMessage(`Error: ${data.error}`);
       }
@@ -42,12 +54,43 @@ const Register = () => {
       <h2 className="text-2xl font-bold mb-4">Register</h2>
       {message && <p className="mb-4 text-blue-500">{message}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div className="flex flex-row justify-between">
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First name"
+            value={formData.firstName}
+            onChange={(e) =>
+              handleChange({ label: e.target.name, value: e.target.value })
+            }
+            className="w-[48%] p-2 border rounded"
+            required
+          />
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last name"
+            value={formData.lastName}
+            onChange={(e) =>
+              handleChange({ label: e.target.name, value: e.target.value })
+            }
+            className="w-[48%] p-2 border rounded"
+            required
+          />
+        </div>
+        <Combobox
+          data={[{ label: "University of Ottawa", value: "uottawa" }]}
+          label="institution"
+          onChange={handleChange}
+        />
         <input
           type="text"
           name="username"
           placeholder="Username"
           value={formData.username}
-          onChange={handleChange}
+          onChange={(e) =>
+            handleChange({ label: e.target.name, value: e.target.value })
+          }
           className="p-2 border rounded"
           required
         />
@@ -56,7 +99,9 @@ const Register = () => {
           name="email"
           placeholder="Email"
           value={formData.email}
-          onChange={handleChange}
+          onChange={(e) =>
+            handleChange({ label: e.target.name, value: e.target.value })
+          }
           className="p-2 border rounded"
           required
         />
@@ -65,11 +110,15 @@ const Register = () => {
           name="password"
           placeholder="Password"
           value={formData.password}
-          onChange={handleChange}
+          onChange={(e) =>
+            handleChange({ label: e.target.name, value: e.target.value })
+          }
           className="p-2 border rounded"
           required
         />
-        <button type="submit" className="p-2 bg-blue-500 text-white rounded">Register</button>
+        <button type="submit" className="p-2 bg-blue-500 text-white rounded">
+          Register
+        </button>
       </form>
     </div>
   );
