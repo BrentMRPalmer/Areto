@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Combobox } from "@/components/ui/combobox";
+import { FormDataItem } from "@/types/form";
 
 const Register = () => {
+  // State for maintaining form values
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -11,10 +13,11 @@ const Register = () => {
     institution: "",
   });
 
+  // Form submission result message
   const [message, setMessage] = useState("");
 
   // Handle input changes
-  const handleChange = ({ label, value }: { label: string; value: string }) => {
+  const handleChange = ({ label, value }: FormDataItem) => {
     setFormData({ ...formData, [label]: value });
     console.log(formData);
   };
@@ -24,6 +27,8 @@ const Register = () => {
     e.preventDefault();
 
     try {
+      // POST to student registration API
+      // TODO: replace hardcoded server port
       const response = await fetch(`http://localhost:3000/api/students`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +59,7 @@ const Register = () => {
       <h2 className="text-2xl font-bold mb-4">Register</h2>
       {message && <p className="mb-4 text-blue-500">{message}</p>}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/* First + Last Name Input */}
         <div className="flex flex-row justify-between">
           <input
             type="text"
@@ -78,11 +84,13 @@ const Register = () => {
             required
           />
         </div>
+        {/* Institution Input */}
         <Combobox
           data={[{ label: "University of Ottawa", value: "uottawa" }]}
           label="institution"
           onChange={handleChange}
         />
+        {/* Username Input */}
         <input
           type="text"
           name="username"
@@ -94,6 +102,7 @@ const Register = () => {
           className="p-2 border rounded"
           required
         />
+        {/* Email Input */}
         <input
           type="email"
           name="email"
@@ -105,6 +114,7 @@ const Register = () => {
           className="p-2 border rounded"
           required
         />
+        {/* Password Input */}
         <input
           type="password"
           name="password"
@@ -116,6 +126,7 @@ const Register = () => {
           className="p-2 border rounded"
           required
         />
+        {/* Registration Button */}
         <button type="submit" className="p-2 bg-blue-500 text-white rounded">
           Register
         </button>

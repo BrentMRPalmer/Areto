@@ -16,16 +16,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-type DataItem = {
-  value: string;
-  label: string;
-};
+import { FormDataItem } from "@/types/form";
 
 type ComboboxProps = {
-  data: DataItem[];
+  data: FormDataItem[];
   label: string;
-  onChange: ({label, value}: {label: string, value: string}) => void;
+  onChange: ({label, value}: FormDataItem) => void;
 };
 
 export function Combobox({ data, label, onChange }: ComboboxProps) {
