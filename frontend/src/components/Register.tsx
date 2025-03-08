@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Combobox } from "@/components/ui/combobox";
 import { FormDataItem } from "@/types/form";
+import { BE_SERVER_PORT } from "@/constants";
 
 const Register = () => {
   // State for maintaining form values
@@ -29,11 +30,14 @@ const Register = () => {
     try {
       // POST to student registration API
       // TODO: replace hardcoded server port
-      const response = await fetch(`http://localhost:3000/api/students`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `http://localhost:${BE_SERVER_PORT}/api/students`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
