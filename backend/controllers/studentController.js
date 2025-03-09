@@ -1,5 +1,15 @@
 import { Student, Course } from "../models/index.js";
 
+// Get all students
+export const getStudents = async (req, res) => {
+  try {
+    const students = await Student.find();
+    res.status(200).json(students);
+  } catch (error) {
+    res.status(500).json({ error: "Error getting students", details: error.message})
+  }
+}
+
 // Register a new student
 export const registerStudent = async (req, res) => {
   try {
