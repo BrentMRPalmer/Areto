@@ -6,7 +6,7 @@ export const getStudents = async (req, res) => {
     const students = await Student.find();
     res.status(200).json(students);
   } catch (error) {
-    res.status(500).json({ error: "Error getting students", details: error.message})
+    res.status(500).json({ error: "Error getting students", details: error.message })
   }
 }
 
@@ -27,6 +27,30 @@ export const registerStudent = async (req, res) => {
   }
 };
 
+// Login as a student
+export const loginStudent = async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+
+    if ((!username && !email) || !password) {
+      return res.json({ message: "All fields are required" });
+    }
+
+    const findCondition = email ?? username;
+
+    // Find associated student
+    const user = await Student.findOne({ findCondition });
+
+    if (!user) {
+      return res.json({message: "Incorrect username or email"});
+    }
+
+    res.status(201).json({ message: "Signed in successfully!" });
+  } catch (error) {
+    res.status(500).json({ error: "Error registering student", details: error.message });
+  }
+}
+
 // Enroll a student into a course
 export const enrollInCourse = async (req, res) => {
   try {
@@ -41,7 +65,7 @@ export const enrollInCourse = async (req, res) => {
     // Find the student, and update enrolledCourses
     const student = await Student.findByIdAndUpdate(
       studentId,
-      { $addToSet: {enrolledCourses: courseId }},
+      { $addToSet: { enrolledCourses: courseId } },
       { new: true }
     ).populate("enrolledCourses"); // Populate replaces courseIds with course objects
 
