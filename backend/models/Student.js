@@ -8,7 +8,7 @@ const studentSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
   institution: { type: String, required: true },
-  enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course"}]
+  enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }]
 }, { timestamps: true });
 
 // Export the Student model

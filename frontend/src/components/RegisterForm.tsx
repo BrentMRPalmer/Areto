@@ -19,7 +19,6 @@ const RegisterForm = () => {
 
   // Handle input changes
   const handleChange = async ({ label, value }: FormDataItem) => {
-    console.log({ label, value });
     setFormData((formData) => ({ ...formData, [label]: value }));
   };
 

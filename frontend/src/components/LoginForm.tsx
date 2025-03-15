@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Combobox } from "@/components/ui/combobox";
 import { FormDataItem } from "@/types/form";
 import { BE_SERVER_PORT } from "@/constants";
+import { useAuth } from "@/context/AuthContext";
 
 const LoginForm = () => {
+  // Hook to handle authentication
+  const auth = useAuth();
+
   // State for maintaining form values
   const [formData, setFormData] = useState({
     usernameOrEmail: "",
@@ -26,7 +29,7 @@ const LoginForm = () => {
       // POST to student registration API
       // TODO: replace hardcoded server port
       const response = await fetch(
-        `http://localhost:${BE_SERVER_PORT}/api/students`,
+        `http://localhost:${BE_SERVER_PORT}/api/students/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -36,11 +39,12 @@ const LoginForm = () => {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage("User registered successfully!");
+        setMessage("Logged in successfully!");
         setFormData({
           usernameOrEmail: "",
           password: "",
         }); // Clear form
+        auth.loginAction(data);
       } else {
         setMessage(`Error: ${data.error}`);
       }

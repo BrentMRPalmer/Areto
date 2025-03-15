@@ -1,4 +1,6 @@
 import { Student, Course } from "../models/index.js";
+import { createSecretToken } from "../util/auth.js";
+import bcrypt from "bcryptjs";
 
 // Get all students
 export const getStudents = async (req, res) => {
@@ -13,7 +15,15 @@ export const getStudents = async (req, res) => {
 // Register a new student
 export const registerStudent = async (req, res) => {
   try {
-    const { firstName, lastName, username, email, password, institution } = req.body;
+    let { firstName, lastName, username, email, password, institution } = req.body;
+
+    const existingUser = await Student.findOne({ email });
+
+    if (existingUser) {
+      return res.json({ message: "Student already registered." });
+    }
+
+    password = await bcrypt.hash(password, 12);
 
     // Create new student
     const newStudent = new Student({ firstName, lastName, username, email, password, institution });
@@ -21,7 +31,11 @@ export const registerStudent = async (req, res) => {
     // Save student to MongoDB
     await newStudent.save();
 
-    res.status(201).json({ message: "Student registered successfully!" });
+    res.status(201).json({
+      message: "Student registered successfully!",
+      success: true,
+      newStudent
+    });
   } catch (error) {
     res.status(500).json({ error: "Error registering student", details: error.message });
   }
@@ -30,24 +44,35 @@ export const registerStudent = async (req, res) => {
 // Login as a student
 export const loginStudent = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { usernameOrEmail, password } = req.body;
 
-    if ((!username && !email) || !password) {
-      return res.json({ message: "All fields are required" });
+    if (!usernameOrEmail || !password) {
+      return res.status(500).json({ message: "All fields are required" });
     }
-
-    const findCondition = email ?? username;
 
     // Find associated student
-    const user = await Student.findOne({ findCondition });
+    const user = usernameOrEmail.includes("@") ?
+      await Student.findOne({ email: usernameOrEmail }) :
+      await Student.findOne({ username: usernameOrEmail });
 
     if (!user) {
-      return res.json({message: "Incorrect username or email"});
+      return res.json({ message: "Incorrect username or email" });
     }
 
-    res.status(201).json({ message: "Signed in successfully!" });
+    const verifyPassword = await bcrypt.compare(password, user.password);
+    if (!verifyPassword) return res.status(400).json({ message: "Invalid credentials" });
+
+    const token = createSecretToken(user._id);
+
+    // Include JWT token in response cookie
+    res.cookie("token", token, {
+      withCredentials: true,
+      httpOnly: false,
+    });
+
+    res.status(201).json({ data: { user: user }, token: token, message: "Login successful!" });
   } catch (error) {
-    res.status(500).json({ error: "Error registering student", details: error.message });
+    res.status(500).json({ error: "Error logging in.", details: error.message });
   }
 }
 

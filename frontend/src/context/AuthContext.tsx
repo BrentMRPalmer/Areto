@@ -1,20 +1,53 @@
-import { createContext, useState, useEffect } from "react";
-import { getProfile } from "../services/authService.ts";
+import { createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export const AuthContext = createContext({});
+// Initialize context values
+const AuthContext = createContext({
+  token: "",
+  user: {},
+  loginAction: (res: any) => {},
+  logOut: () => {},
+});
 
-export function AuthProvider({ children }) {
-    const [user, setUser] = useState(null);
+function AuthProvider({ children }) {
+  const [user, setUser] = useState(localStorage.getItem("user") || {});
+  const [token, setToken] = useState(localStorage.getItem("authToken") || "");
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        getProfile()
-            .then((data) => setUser(data))
-            .catch(() => setUser(null));
-    }, []);
+  const loginAction = async (res) => {
+    try {
+      console.log(res);
+      if (res) {
+        setUser(res.data.user);
+        setToken(res.token);
+        localStorage.setItem("authToken", res.token);
+        localStorage.setItem("user", res.data.user);
+        navigate("/");
+        return;
+      }
+      throw new Error(message);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, setUser }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  const logOut = () => {
+    setUser(null);
+    setToken("");
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+
+  return (
+    <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export default AuthProvider;
+
+export const useAuth = () => {
+  return useContext(AuthContext);
 };
