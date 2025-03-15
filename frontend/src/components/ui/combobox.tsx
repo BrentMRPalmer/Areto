@@ -52,11 +52,9 @@ export function Combobox({ data, label, onChange }: ComboboxProps) {
               {data.map((item) => (
                 <CommandItem
                   key={item.value}
-                  value={item.label}
+                  value={item.value}
                   onSelect={(selectedValue: string) => {
-                    setCurrentValue(
-                      selectedValue === currentValue ? "" : currentValue
-                    );
+                    setCurrentValue(selectedValue);
                     setOpen(false);
                     onChange({ label: label, value: item.value });
                   }}

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Combobox } from "@/components/ui/combobox";
 import { FormDataItem } from "@/types/form";
 import { BE_SERVER_PORT } from "@/constants";
 
-const Register = () => {
+const RegisterForm = () => {
   // State for maintaining form values
   const [formData, setFormData] = useState({
     firstName: "",
@@ -18,8 +18,9 @@ const Register = () => {
   const [message, setMessage] = useState("");
 
   // Handle input changes
-  const handleChange = ({ label, value }: FormDataItem) => {
-    setFormData({ ...formData, [label]: value });
+  const handleChange = async ({ label, value }: FormDataItem) => {
+    console.log({ label, value });
+    setFormData((formData) => ({ ...formData, [label]: value }));
   };
 
   // Handle form submission
@@ -138,4 +139,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterForm;
