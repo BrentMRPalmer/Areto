@@ -1,70 +1,94 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import ProfileForm from "../components/profile/ProfileForm";
+import ProfileDisplay from "../components/profile/ProfileDisplay";
+import { ProfileData } from "../components/profile/types";
+import { useNavigate } from "react-router-dom";
 
-const Profile = () => {
-  const auth = useAuth();
+// Using dummy data for now
+const INITIAL_PROFILE: ProfileData = {
+  name: "Jason Wei",
+  about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean finibus tempor risus et ornare.",
+  skills: ["Algorithms", "Public Speaking", "Operating Systems"],
+  additionalInfo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+};
+
+export default function Profile() {
+  const [profile, setProfile] = useState<ProfileData>(INITIAL_PROFILE);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("myProfile");
+      if (stored) {
+        try {
+          const localProfile = JSON.parse(stored) as ProfileData;
+          setProfile(localProfile);
+        } catch {
+          // no-op
+        }
+      }
+    }
+  }, []);
+
+  // Persist to localStorage on changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("myProfile", JSON.stringify(profile));
+    }
+  }, [profile]);
+
+  function handleEditClick() {
+    setIsEditing(true);
+  }
+
+  function handleSave(newProfile: ProfileData) {
+    setProfile(newProfile);
+    setIsEditing(false);
+  }
+
+  function handleCancel() {
+    setIsEditing(false);
+  }
+
+  // The actual logout logic
+  function handleLogout() {
+    console.log("Logging out...");
+    localStorage.removeItem("myProfile");
+    navigate("/");
+  }
 
   return (
     <div className="px-32 mt-12">
-      <div className="flex flex-row justify-between">
-        <h1 className="text-5xl font-bold mb-6">My Profile</h1>
-        <Button
-          variant="outline"
-          className="hover:cursor-pointer"
-          onClick={() => auth.logOut()}
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-5xl font-bold">My Profile</h1>
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 rounded bg-gray-900 text-white hover:bg-gray-500 transition-colors"
         >
           Log out
-        </Button>
+        </button>
       </div>
 
-      <div className="border-t border-gray-200 pt-6">
-        {/* Profile Picture */}
-        <div className="flex flex-row justify-start items-center gap-8">
-          <Skeleton className="h-[80px] w-[80px] rounded-full bg-gray-300 mb-6" />
-          <h1 className="text-3xl font-bold mb-6">
-            {auth.user?.firstName} {auth.user?.lastName}
-          </h1>
+      {/* Main content */}
+      <div className="flex-1 flex items-center justify-center py-8 px-4">
+        <div className="w-full max-w-3xl bg-white rounded-lg shadow-xl p-8 min-h-[600px] border-1 border-black">
+          {isEditing ? (
+            <ProfileForm
+              defaultValues={profile}
+              onSave={handleSave}
+              onCancel={handleCancel}
+              error={error}
+              setError={setError}
+            />
+          ) : (
+            <ProfileDisplay profile={profile} onEdit={handleEditClick} />
+          )}
         </div>
-
-        {/* Profile Info */}
-        <h3 className="mb-3 text-xl font-semibold">Institution</h3>
-        <p className="text-gray-700">{auth.user?.institution}</p>
-        <h3 className="mb-3 mt-6 text-xl font-semibold">About Me</h3>
-        <p className="text-gray-700">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
-          finibus tempor risus et ornare. Cras placerat urna nec rutrum commodo.
-          Vestibulum in ante vel nisi tempus dignissim ut at ipsum. Quisque
-          accumsan rutrum nunc, id blandit mi rhoncus eu.
-        </p>
-      </div>
-      <div className="mt-6">
-        <h3 className="mb-3 text-xl font-semibold">Top Skills</h3>
-        <div className="flex flex-wrap gap-2">
-          {[
-            "Algorithms",
-            "Public Speaking",
-            "Operating Systems",
-            "UI/UX Design",
-          ].map((skill) => (
-            <span
-              key={skill}
-              className="rounded-full border border-gray-300 bg-white px-4 py-2 text-sm"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <h3 className="mb-3 text-xl font-semibold">Additional Info</h3>
-        <p className="text-gray-700">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </p>
       </div>
     </div>
   );
-};
-
-export default Profile;
+}
