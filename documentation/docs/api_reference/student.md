@@ -15,7 +15,7 @@ Registers a new student in the database.
     "username": "johndoe123",
     "email": "john.doe@example.com",
     "password": "securePassword123",
-    "institution": "University of Example"
+    "institution": "uottawa"
 } </code> </pre>
 
 ## Enrol in a Course

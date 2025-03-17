@@ -10,7 +10,9 @@ const AuthContext = createContext({
 });
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState(localStorage.getItem("user") || {});
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user") ?? "{}")
+  );
   const [token, setToken] = useState(localStorage.getItem("authToken") || "");
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ function AuthProvider({ children }) {
         setUser(res.data.user);
         setToken(res.token);
         localStorage.setItem("authToken", res.token);
-        localStorage.setItem("user", res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         navigate("/");
         return;
       }

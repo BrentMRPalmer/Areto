@@ -17,10 +17,10 @@ function App() {
       <>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route element={<PrivateRoute />}>
+            <Route path="/" element={<Home />} />
             <Route path="/classes" element={<Classes />} />
             <Route path="/clubs" element={<Clubs />} />
             <Route path="/messages" element={<Messages />} />

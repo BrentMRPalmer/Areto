@@ -25,7 +25,7 @@ const Clubs = () => {
 
   return (
     <div className="px-32 mt-12">
-      <h1 className="text-5xl font-bold mb-6">My Clubs</h1>
+      <h1 className="text-5xl font-bold mb-6">Find Clubs</h1>
       <div className="flex flex-row justify-end mb-8">
         <h3>[Search Placeholder]</h3>
       </div>
