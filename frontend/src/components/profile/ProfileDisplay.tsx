@@ -1,13 +1,18 @@
 import { FaPencilAlt } from "react-icons/fa";
-import { DEFAULT_PFP } from "./constants";
 import { ProfileData } from "./types";
+import { useAuth } from "@/context/AuthContext";
 
 interface ProfileDisplayProps {
   profile: ProfileData;
   onEdit: () => void;
 }
 
-export default function ProfileDisplay({ profile, onEdit }: ProfileDisplayProps) {
+export default function ProfileDisplay({
+  profile,
+  onEdit,
+}: ProfileDisplayProps) {
+  const auth = useAuth();
+  const DEFAULT_PFP = `https://ui-avatars.com/api/?name=${auth.user.firstName}+${auth.user.lastName}&size=80`;
   return (
     <div>
       {/* Profile Picture, Name & Edit */}

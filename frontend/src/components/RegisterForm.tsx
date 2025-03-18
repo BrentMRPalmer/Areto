@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Combobox } from "@/components/ui/combobox";
 import { FormDataItem } from "@/types/form";
-import { BE_SERVER_PORT } from "@/constants";
+import { BE_SERVER_PORT, universities } from "@/constants";
 
-const Register = () => {
+const RegisterForm = () => {
   // State for maintaining form values
   const [formData, setFormData] = useState({
     firstName: "",
@@ -18,8 +18,8 @@ const Register = () => {
   const [message, setMessage] = useState("");
 
   // Handle input changes
-  const handleChange = ({ label, value }: FormDataItem) => {
-    setFormData({ ...formData, [label]: value });
+  const handleChange = async ({ label, value }: FormDataItem) => {
+    setFormData((formData) => ({ ...formData, [label]: value }));
   };
 
   // Handle form submission
@@ -89,7 +89,7 @@ const Register = () => {
         </div>
         {/* Institution Input */}
         <Combobox
-          data={[{ label: "University of Ottawa", value: "uottawa" }]}
+          data={universities}
           label="institution"
           onChange={handleChange}
         />
@@ -134,8 +134,14 @@ const Register = () => {
           Register
         </button>
       </form>
+      <div className="text-center pt-4">
+        Have an account already?{" "}
+        <a className="text-blue-500" href="/login">
+          Log in here
+        </a>
+      </div>
     </div>
   );
 };
 
-export default Register;
+export default RegisterForm;

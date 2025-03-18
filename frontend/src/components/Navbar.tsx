@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom"
-import { MessageSquare, User } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom";
+import { MessageSquare, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   console.log("Navbar is rendering!");
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background">
-      <div className="flex h-16 items-center justify-between pl-16 pr-48">
+      <div className="flex h-16 items-center justify-between pl-16 pr-16">
         {/* Logo */}
         <Link to="/" className="text-xl font-semibold">
           Areto
@@ -38,5 +38,5 @@ export function Navbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -6,6 +6,7 @@ import courseRoutes from "./routes/courseRoutes.js"
 import sectionRoutes from "./routes/sectionRoutes.js"
 import poolRoutes from "./routes/poolRoutes.js"
 import groupRoutes from "./routes/groupRoutes.js"
+import cookieParser from "cookie-parser"
 
 // Creates an Express server instance
 const app = express();
@@ -13,13 +14,14 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser()); // Use cookies to manage sessions
 
 // Set environment variables
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
 
 // Connect to MongoDB
-mongoose.connect(MONGO_URI, {dbName: "areto"})
+mongoose.connect(MONGO_URI, { dbName: "areto" })
     .then(() => {
         console.log("MongoDB connected")
         app.listen(PORT, () => console.log(`Server running on port ${PORT}`))

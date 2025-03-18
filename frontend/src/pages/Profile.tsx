@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import ProfileForm from "../components/profile/ProfileForm";
 import ProfileDisplay from "../components/profile/ProfileDisplay";
 import { ProfileData } from "../components/profile/types";
+import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 // Using dummy data for now
 const INITIAL_PROFILE: ProfileData = {
   name: "Jason Wei",
-  about: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean finibus tempor risus et ornare.",
+  about:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean finibus tempor risus et ornare.",
   skills: ["Algorithms", "Public Speaking", "Operating Systems"],
   additionalInfo: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 };
@@ -16,7 +18,10 @@ export default function Profile() {
   const [profile, setProfile] = useState<ProfileData>(INITIAL_PROFILE);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
+
+  const auth = useAuth();
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -25,6 +30,7 @@ export default function Profile() {
       if (stored) {
         try {
           const localProfile = JSON.parse(stored) as ProfileData;
+          localProfile.name = auth.user.firstName + " " + auth.user.lastName;
           setProfile(localProfile);
         } catch {
           // no-op
@@ -56,8 +62,9 @@ export default function Profile() {
   // The actual logout logic
   function handleLogout() {
     console.log("Logging out...");
+    auth.logOut();
     localStorage.removeItem("myProfile");
-    navigate("/");
+    navigate("/login");
   }
 
   return (
