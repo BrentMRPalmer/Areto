@@ -5,6 +5,7 @@ import AuthProvider from "./context/AuthContext.tsx";
 import PrivateRoute from "./router/route";
 import Home from "./pages/Home";
 import Classes from "./pages/Classes";
+import ClassInfo from "./pages/ClassInfo";
 import Clubs from "./pages/Clubs";
 import Messages from "./pages/Messages";
 import Profile from "./pages/Profile";
@@ -23,6 +24,7 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/classes" element={<Classes />} />
+            <Route path="/classes/:courseId" element={<ClassInfo />} />
             <Route path="/clubs" element={<Clubs />} />
             <Route path="/messages" element={<Messages />} />
             <Route path="/profile" element={<Profile />} />
