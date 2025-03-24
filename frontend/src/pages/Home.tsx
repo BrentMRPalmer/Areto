@@ -17,7 +17,7 @@ const Home = () => {
     name: string;
   };
 
-  const [classIds, setClassIds] = useState([]);
+  const [sectionIds, setSectionIds] = useState([]);
   const [classList, setClassList] = useState<Class[]>([]);
 
   const auth = useAuth();
@@ -25,32 +25,36 @@ const Home = () => {
   const updateCourseList = (ids: string[]) => {
     let queryIds = "";
 
-    for (const id of ids) {
-      if (queryIds == "") {
-        queryIds += `ids=${id}`;
-      } else {
-        queryIds += `&ids=${id}`;
-      }
-    }
-
-    console.log(ids);
-    // get class values from class IDs
-    fetch(`http://localhost:${BE_SERVER_PORT}/api/courses?${queryIds}`)
+    // Get course IDs from sections
+    fetch(`http://localhost:${BE_SERVER_PORT}/api/sections?ids=${ids}`)
       .then((response) => response.json())
       .then((data) => {
-        setClassList(data);
+        for (const section of data) {
+          if (queryIds == "") {
+            queryIds += `ids=${section.course}`;
+          } else {
+            queryIds += `&ids=${section.course}`;
+          }
+        }
+
+        // get class values from class IDs
+        fetch(`http://localhost:${BE_SERVER_PORT}/api/courses?${queryIds}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setClassList(data);
+          });
       });
   };
 
   useEffect(() => {
-    // Get enrolled class IDs to display
+    // Get sections from enrolledCourses
     fetch(
       `http://localhost:${BE_SERVER_PORT}/api/students/courses/${auth.user?._id}`
     )
       .then((response) => response.json())
       .then((data) => {
+        // Update course list from IDs in sections
         console.log(data);
-        setClassIds(data);
         updateCourseList(data);
       });
   }, []);

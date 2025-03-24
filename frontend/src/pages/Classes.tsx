@@ -9,9 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BE_SERVER_PORT } from "@/constants";
+import { useNavigate } from "react-router-dom";
 
 const Classes = () => {
   type Class = {
+    _id: string;
     code: string;
     institution: string;
     name: string;
@@ -19,7 +21,7 @@ const Classes = () => {
 
   const [classes, setClasses] = useState<Class[]>([]);
 
-  const auth = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Get classes to display
@@ -29,21 +31,6 @@ const Classes = () => {
         setClasses(data);
       });
   }, []);
-
-  const registerClass = async (course) => {
-    const response = fetch(
-      `http://localhost:${BE_SERVER_PORT}/api/students/enroll`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          studentId: auth.user?._id,
-          courseId: course._id,
-        }),
-      }
-    );
-    console.log(response);
-  };
 
   return (
     <div className="px-32 mt-12">
@@ -59,7 +46,7 @@ const Classes = () => {
           {classes.map((course) => (
             <Card
               className="hover:cursor-pointer"
-              onClick={() => registerClass(course)}
+              onClick={() => navigate("/classes/" + course._id)}
             >
               <CardHeader>
                 <CardTitle>{course.code}</CardTitle>

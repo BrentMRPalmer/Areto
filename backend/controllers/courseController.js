@@ -1,6 +1,6 @@
 import { Course } from "../models/index.js";
 
-// Get all courses
+// Get courses (by id or all)
 export const getCourses = async (req, res) => {
   try {
     const { ids } = req.query;

@@ -1,4 +1,4 @@
-import { Student, Course } from "../models/index.js";
+import { Student, Section } from "../models/index.js";
 import { createSecretToken } from "../util/auth.js";
 import bcrypt from "bcryptjs";
 
@@ -79,20 +79,20 @@ export const loginStudent = async (req, res) => {
 // Enroll a student into a course
 export const enrollInCourse = async (req, res) => {
   try {
-    const { studentId, courseId } = req.body;
+    const { studentId, sectionId } = req.body;
 
     // Verify the course exists
-    const course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ error: "Course not found" });
+    const section = await Section.findById(sectionId);
+    if (!section) {
+      return res.status(404).json({ error: "Section not found" });
     }
 
     // Find the student, and update enrolledCourses
     const student = await Student.findByIdAndUpdate(
       studentId,
-      { $addToSet: { enrolledCourses: courseId } },
+      { $addToSet: { enrolledCourses: sectionId } },
       { new: true }
-    ).populate("enrolledCourses"); // Populate replaces courseIds with course objects
+    ).populate("enrolledCourses"); // Populate replaces sectionIds with course objects
 
     if (!student) {
       return res.status(404).json({ error: "Student not found" });
