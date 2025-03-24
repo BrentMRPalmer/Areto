@@ -42,7 +42,7 @@ const Classes = () => {
         <h3>[Search Placeholder]</h3>
       </div>
       <Suspense fallback={<h1>Loading</h1>}>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto mb-6">
           {classes.map((course) => (
             <Card
               className="hover:cursor-pointer"
