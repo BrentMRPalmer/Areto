@@ -3,7 +3,10 @@ import { Course } from "../models/index.js";
 // Get all courses
 export const getCourses = async (req, res) => {
   try {
-    const classes = await Course.find();
+    const { ids } = req.query;
+
+    // Get from list of ids if provided, else get all
+    const classes = ids ? await Course.find({ '_id': { $in: ids } }) : await Course.find();
     res.status(200).json(classes);
   } catch (error) {
     res.status(500).json({ error: "Error getting classes", details: error.message })

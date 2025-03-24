@@ -103,3 +103,20 @@ export const enrollInCourse = async (req, res) => {
     res.status(500).json({ error: "Error enrolling in course", details: error.message });
   }
 }
+
+// Get all enrolled classes for a specific student
+export const getEnrolledClasses = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+
+    // Verify the course exists
+    const studentClasses = await Student.findById(studentId, "enrolledCourses");
+    if (!studentClasses) {
+      return res.status(404).json({ error: "No classes were found." });
+    }
+
+    res.status(200).json(studentClasses.enrolledCourses);
+  } catch (error) {
+    res.status(500).json({ error: "Error enrolling in course", details: error.message });
+  }
+}

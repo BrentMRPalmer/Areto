@@ -12,14 +12,18 @@ const Clubs = () => {
     {
       institution: "uOttawa",
       name: "Computer Science Club",
+      description:
+        "A club at uOttawa for extracurricular Comp. Sci through workshops & competitions",
     },
     {
       institution: "uOttawa",
       name: "Badminton Club",
+      description: "Organized recreational badminton at uOttawa",
     },
     {
       institution: "uOttawa",
       name: "Rowing Club",
+      description: "Rowing training and competition for uOttawa students",
     },
   ];
 
@@ -34,7 +38,7 @@ const Clubs = () => {
           <Card>
             <CardHeader>
               <CardTitle>{club.name}</CardTitle>
-              <CardDescription>[description]</CardDescription>
+              <CardDescription>{club.description}</CardDescription>
             </CardHeader>
             <CardContent>
               <p></p>
