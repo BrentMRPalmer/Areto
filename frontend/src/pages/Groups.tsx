@@ -1,9 +1,9 @@
 import { Suspense, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, WandSparkles } from "lucide-react";
 
 import { BE_SERVER_PORT } from "@/constants";
-import { Class, Section } from "@/types/data";
+import { Class, Section, Pool } from "@/types/data";
 
 import { useAuth } from "@/context/AuthContext";
 import {
@@ -19,6 +19,7 @@ import { Button } from "@/components/ui/button";
 const Groups = () => {
   const [course, setCourse] = useState<Class>();
   const [section, setSection] = useState<Section>();
+  const [pools, setPools] = useState<Pool[]>([]);
 
   const navigate = useNavigate();
   const auth = useAuth();
@@ -42,6 +43,15 @@ const Groups = () => {
       .then((response) => response.json())
       .then((data) => {
         setSection(data[0]);
+      });
+
+    // Get pools by course and section
+    fetch(
+      `http://localhost:${BE_SERVER_PORT}/api/pools?courseId=${params.courseId}&sectionId=${params.sectionId}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setPools(data);
       });
   }, []);
 
@@ -67,33 +77,38 @@ const Groups = () => {
           Create Pool
         </Button>
       </div>
-      {/* <Suspense fallback={<h1>Loading</h1>}>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto">
-          {sections.map((section) => (
+      <Suspense fallback={<h1>Loading</h1>}>
+        <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto">
+          {pools.map((pool) => (
             <Card>
               <CardHeader>
-                <CardTitle>
-                  Section {section.code}: {section.professor}
-                </CardTitle>
+                <CardTitle>{pool.name}</CardTitle>
                 <CardDescription>
-                  Enrolled Students: {section.numStudents}
+                  Number of Students: {pool.numStudents}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p></p>
               </CardContent>
-              <CardFooter className="flex justify-end">
+              <CardFooter className="flex justify-between">
                 <Button
-                  className="bg-gray-900 text-white cursor-pointer hover:bg-gray-700"
-                  onClick={() => enrollSection(section)}
+                  className="bg-gray-300 cursor-pointer hover:bg-gray-200 tracking-wide"
+                  onClick={() => navigate(`/pool/${course?._id}/${section?._id}/${pool._id}`)}
                 >
-                  Enroll
+                  <WandSparkles className="h-5 w-5" />
+                  <b>Quick Match</b>
+                </Button>
+                <Button
+                  className="bg-gray-900 text-white cursor-pointer hover:bg-gray-700 tracking-wide"
+                  onClick={() => navigate(`/pool/${course?._id}/${section?._id}/${pool._id}`)}
+                >
+                  <b>Join Pool</b>
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
-      </Suspense> */}
+      </Suspense>
     </div>
   );
 };

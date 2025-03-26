@@ -13,3 +13,11 @@ export type Section = {
   professor: string;
   term: string;
 };
+
+export type Pool = {
+  _id: string;
+  name: string;
+  numStudents: number;
+  course: string;
+  section: string;
+};
