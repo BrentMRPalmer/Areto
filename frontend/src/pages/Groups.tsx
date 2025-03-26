@@ -55,6 +55,23 @@ const Groups = () => {
       });
   }, []);
 
+  const joinPool = (poolId: string) => {
+    // fetch to join pool
+    const response = fetch(`http://localhost:${BE_SERVER_PORT}/api/pools/add`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        poolId: poolId,
+        studentId: auth.user?._id,
+      }),
+    });
+
+    console.log(response);
+
+    // navigate to pool page
+    navigate(`/pool/${course?._id}/${section?._id}/${poolId}`);
+  };
+
   return (
     <div className="px-32 mt-12">
       <h1 className="text-5xl font-bold mb-6">
@@ -93,14 +110,16 @@ const Groups = () => {
               <CardFooter className="flex justify-between">
                 <Button
                   className="bg-gray-300 cursor-pointer hover:bg-gray-200 tracking-wide"
-                  onClick={() => navigate(`/pool/${course?._id}/${section?._id}/${pool._id}`)}
+                  onClick={() =>
+                    navigate(`/pool/${course?._id}/${section?._id}/${pool._id}`)
+                  }
                 >
                   <WandSparkles className="h-5 w-5" />
                   <b>Quick Match</b>
                 </Button>
                 <Button
                   className="bg-gray-900 text-white cursor-pointer hover:bg-gray-700 tracking-wide"
-                  onClick={() => navigate(`/pool/${course?._id}/${section?._id}/${pool._id}`)}
+                  onClick={() => joinPool(pool._id)}
                 >
                   <b>Join Pool</b>
                 </Button>
