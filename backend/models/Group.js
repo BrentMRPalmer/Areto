@@ -10,7 +10,7 @@ const groupSchema = new mongoose.Schema({
         }
     },
     pool: { type: mongoose.Schema.Types.ObjectId, ref: "Pool", required: true },
-    student: [{ type: mongoose.Schema.Types.ObjectId, ref: "Section"}]
+    student: [{ type: mongoose.Schema.Types.ObjectId, ref: "Student"}]
 }, { timestamps: true })
 
 groupSchema.index({ name: 1, pool: 1 }, { unique: true })

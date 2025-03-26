@@ -6,7 +6,7 @@ export function Navbar() {
   console.log("Navbar is rendering!");
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background">
+    <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="flex h-16 items-center justify-between pl-16 pr-16">
         {/* Logo */}
         <Link to="/" className="text-xl font-semibold">

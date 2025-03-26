@@ -1,4 +1,9 @@
 import { Suspense, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { BE_SERVER_PORT } from "@/constants";
+import { Class, Section } from "@/types/data";
+
 import {
   Card,
   CardContent,
@@ -7,20 +12,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BE_SERVER_PORT } from "@/constants";
+
 import { useAuth } from "@/context/AuthContext";
 
 const Home = () => {
-  type Class = {
-    code: string;
-    institution: string;
-    name: string;
-  };
-
-  const [sectionIds, setSectionIds] = useState([]);
+  const [sectionMap, setSectionMap] = useState(new Map());
   const [classList, setClassList] = useState<Class[]>([]);
 
   const auth = useAuth();
+  const navigate = useNavigate();
 
   const updateCourseList = (ids: string[]) => {
     let queryIds = "";
@@ -30,6 +30,7 @@ const Home = () => {
       .then((response) => response.json())
       .then((data) => {
         for (const section of data) {
+          setSectionMap(new Map(sectionMap.set(section.course, section._id)));
           if (queryIds == "") {
             queryIds += `ids=${section.course}`;
           } else {
@@ -69,9 +70,14 @@ const Home = () => {
         <h3>[Search Placeholder]</h3>
       </div>
       <Suspense fallback={<h1>Loading</h1>}>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto mb-6">
           {classList.map((course) => (
-            <Card>
+            <Card
+              className="hover:shadow-2xl cursor-pointer"
+              onClick={() =>
+                navigate(`/groups/${course._id}/${sectionMap.get(course._id)}`)
+              }
+            >
               <CardHeader>
                 <CardTitle>{course.code}</CardTitle>
                 <CardDescription>{course.name}</CardDescription>
