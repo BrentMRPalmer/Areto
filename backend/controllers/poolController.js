@@ -24,6 +24,22 @@ export const getPools = async (req, res) => {
     }
 }
 
+export const getStudentsInPool = async (req, res) => {
+    try {
+        const { poolId } = req.params;
+
+        // Verify the course exists
+        const poolStudents = await Pool.findById(poolId, "student");
+        if (!poolStudents) {
+            return res.status(404).json({ error: "No students were found." });
+        }
+
+        res.status(200).json(poolStudents.student);
+    } catch (error) {
+        res.status(500).json({ error: "Error getting pool members", details: error.message });
+    }
+}
+
 // Create a new pool
 export const createPool = async (req, res) => {
     try {
@@ -60,27 +76,27 @@ export const createPool = async (req, res) => {
 // Enroll a student into a course
 export const addStudentToPool = async (req, res) => {
     try {
-      const { poolId, studentId } = req.body;
-  
-      // Verify the student exists
-      const student = await Student.findById(studentId);
-      if (!student) {
-        return res.status(404).json({ error: "Student not found" });
-      }
-  
-      // Find the pool, and update student array
-      const pool = await Pool.findByIdAndUpdate(
-        poolId,
-        { $addToSet: { student: studentId } },
-        { new: true }
-      ).populate("student"); // Populate replaces studentIds with course objects
-  
-      if (!pool) {
-        return res.status(404).json({ error: "Pool not found" });
-      }
-  
-      res.status(200).json({ message: "Added successfully", student });
+        const { poolId, studentId } = req.body;
+
+        // Verify the student exists
+        const student = await Student.findById(studentId);
+        if (!student) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+
+        // Find the pool, and update student array
+        const pool = await Pool.findByIdAndUpdate(
+            poolId,
+            { $addToSet: { student: studentId } },
+            { new: true }
+        ).populate("student"); // Populate replaces studentIds with course objects
+
+        if (!pool) {
+            return res.status(404).json({ error: "Pool not found" });
+        }
+
+        res.status(200).json({ message: "Added successfully", student });
     } catch (error) {
-      res.status(500).json({ error: "Error enrolling in course", details: error.message });
+        res.status(500).json({ error: "Error enrolling in course", details: error.message });
     }
-  }
+}

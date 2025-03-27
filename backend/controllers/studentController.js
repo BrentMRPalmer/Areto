@@ -5,7 +5,9 @@ import bcrypt from "bcryptjs";
 // Get all students
 export const getStudents = async (req, res) => {
   try {
-    const students = await Student.find();
+    const { ids } = req.query;
+
+    const students = ids ? await Student.find({ '_id': { $in: ids } }) : await Student.find();
     res.status(200).json(students);
   } catch (error) {
     res.status(500).json({ error: "Error getting students", details: error.message })

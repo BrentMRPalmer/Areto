@@ -8,6 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+
 import { BE_SERVER_PORT } from "@/constants";
 import { useNavigate } from "react-router-dom";
 
@@ -39,13 +41,13 @@ const Classes = () => {
         <h3>
           <b>Term:</b> Winter 2025
         </h3>
-        <h3>[Search Placeholder]</h3>
+        <Input type="text" placeholder="Search" className="w-[300px]" />
       </div>
       <Suspense fallback={<h1>Loading</h1>}>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto mb-6">
           {classes.map((course) => (
             <Card
-              className="hover:cursor-pointer"
+              className="hover:shadow-2xl cursor-pointer"
               onClick={() => navigate("/classes/" + course._id)}
             >
               <CardHeader>

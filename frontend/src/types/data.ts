@@ -20,4 +20,16 @@ export type Pool = {
   numStudents: number;
   course: string;
   section: string;
+  student: string[];
 };
+
+export type Student = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    username: string;
+    password: string;
+    institution: string;
+    enrolledCourses: string[];
+    extraversion?: number;
+}

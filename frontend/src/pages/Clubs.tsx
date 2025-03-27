@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 const Clubs = () => {
   const dummyClubs = [
@@ -31,11 +32,11 @@ const Clubs = () => {
     <div className="px-32 mt-12">
       <h1 className="text-5xl font-bold mb-6">Find Clubs</h1>
       <div className="flex flex-row justify-end mb-8">
-        <h3>[Search Placeholder]</h3>
+        <Input type="text" placeholder="Search" className="w-[300px]" />
       </div>
       <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 max-w-6xl w-full mx-auto mb-6">
         {dummyClubs.map((club) => (
-          <Card>
+          <Card className="hover:shadow-2xl">
             <CardHeader>
               <CardTitle>{club.name}</CardTitle>
               <CardDescription>{club.description}</CardDescription>
