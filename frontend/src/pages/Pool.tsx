@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { BE_SERVER_PORT } from "@/constants";
@@ -34,6 +34,8 @@ const PoolPage = () => {
     "Operating Systems",
     "UI/UX",
   ];
+
+  const matched = useRef(false);
 
   const navigate = useNavigate();
   const auth = useAuth();
@@ -93,6 +95,36 @@ const PoolPage = () => {
     initializePool();
   }, []);
 
+  useEffect(() => {
+    if (!matched.current && students.length > 0) {
+      let queryIds = "";
+
+      for (const student of students) {
+        if (queryIds == "") {
+          queryIds += `comparedIds=${student._id}`;
+        } else {
+          queryIds += `&comparedIds=${student._id}`;
+        }
+      }
+
+      fetch(
+        `http://localhost:${BE_SERVER_PORT}/api/students/compatability/${auth.user._id}?${queryIds}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          const scoreMap = new Map(data);
+          setStudents((students) =>
+            students.map((student) => ({
+              ...student,
+              compatabilityScore: scoreMap.get(student._id),
+            }))
+          );
+        });
+
+      matched.current = true;
+    }
+  }, [students]);
+
   return (
     <div className="px-32 mt-12">
       <h1 className="text-5xl font-bold mb-6">Find Optimal People</h1>
@@ -138,7 +170,8 @@ const PoolPage = () => {
                           General Rating: <b>4.8/5</b>
                         </h3>
                         <h3 className="mb-1">
-                          Compatibility Score: <b>9.7/10</b>
+                          Compatibility Score:{" "}
+                          {student.compatabilityScore ? <b>{Math.round((student.compatabilityScore + Number.EPSILON) * 100) / 100}/10</b> : <b>Loading...</b>}
                         </h3>
                       </div>
                       <hr className="border-dashed"></hr>

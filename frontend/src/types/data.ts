@@ -24,12 +24,18 @@ export type Pool = {
 };
 
 export type Student = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    username: string;
-    password: string;
-    institution: string;
-    enrolledCourses: string[];
-    extraversion?: number;
-}
+  _id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  password: string;
+  institution: string;
+  enrolledCourses: string[];
+  gpa?: number;
+  extraversion?: number;
+  emotionality?: number;
+  agreeableness?: number;
+  conscientuous?: number;
+  compatabilityScore?: number;
+};
