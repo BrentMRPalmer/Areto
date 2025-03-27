@@ -107,23 +107,40 @@ const Groups = () => {
               <CardContent>
                 <p></p>
               </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button
-                  className="bg-gray-300 cursor-pointer hover:bg-gray-200 tracking-wide"
-                  onClick={() =>
-                    navigate(`/pool/${course?._id}/${section?._id}/${pool._id}`)
-                  }
-                >
-                  <WandSparkles className="h-5 w-5" />
-                  <b>Quick Match</b>
-                </Button>
-                <Button
-                  className="bg-gray-900 text-white cursor-pointer hover:bg-gray-700 tracking-wide"
-                  onClick={() => joinPool(pool._id)}
-                >
-                  <b>Join Pool</b>
-                </Button>
-              </CardFooter>
+              {pool.student.includes(auth.user?._id) ? (
+                <>
+                  <CardFooter className="flex justify-end">
+                    <Button
+                      className="bg-gray-900 text-white cursor-pointer hover:bg-gray-700 tracking-wide"
+                      onClick={() =>
+                        navigate(
+                          `/pool/${course?._id}/${section?._id}/${pool._id}`
+                        )
+                      }
+                    >
+                      <b>Go to Pool</b>
+                    </Button>
+                  </CardFooter>
+                </>
+              ) : (
+                <>
+                  <CardFooter className="flex justify-between">
+                    <Button
+                      className="bg-gray-300 cursor-pointer hover:bg-gray-200 tracking-wide"
+                      onClick={() => console.log(pool._id)}
+                    >
+                      <WandSparkles className="h-5 w-5" />
+                      <b>Quick Match</b>
+                    </Button>
+                    <Button
+                      className="bg-gray-900 text-white cursor-pointer hover:bg-gray-700 tracking-wide"
+                      onClick={() => joinPool(pool._id)}
+                    >
+                      <b>Join Pool</b>
+                    </Button>
+                  </CardFooter>
+                </>
+              )}
             </Card>
           ))}
         </div>

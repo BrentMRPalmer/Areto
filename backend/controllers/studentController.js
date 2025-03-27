@@ -1,14 +1,31 @@
 import { Student, Section } from "../models/index.js";
 import { createSecretToken } from "../util/auth.js";
+import { normalizeAndSort } from "../services/matchmakingService.js";
 import bcrypt from "bcryptjs";
 
 // Get all students
 export const getStudents = async (req, res) => {
   try {
-    const students = await Student.find();
+    const { ids } = req.query;
+
+    const students = ids ? await Student.find({ '_id': { $in: ids } }) : await Student.find();
     res.status(200).json(students);
   } catch (error) {
     res.status(500).json({ error: "Error getting students", details: error.message })
+  }
+}
+
+// Get student by id
+export const getStudentById = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found." });
+    }
+    res.status(200).json(student);
+  } catch (error) {
+    res.status(500).json({ error: "Error getting student", details: error.message })
   }
 }
 
@@ -118,5 +135,18 @@ export const getEnrolledClasses = async (req, res) => {
     res.status(200).json(studentClasses.enrolledCourses);
   } catch (error) {
     res.status(500).json({ error: "Error enrolling in course", details: error.message });
+  }
+}
+
+export const getCompatabilityScores = async (req, res) => {
+  try {
+    const { studentId } = req.params;
+    const { comparedIds } = req.query;
+
+    const distances = await normalizeAndSort(studentId, comparedIds);
+
+    res.status(200).json(distances);
+  } catch (error) {
+    res.status(500).json({ error: "Error computing compatability", details: error.message });
   }
 }
