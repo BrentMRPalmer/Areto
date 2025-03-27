@@ -171,7 +171,17 @@ const PoolPage = () => {
                         </h3>
                         <h3 className="mb-1">
                           Compatibility Score:{" "}
-                          {student.compatabilityScore ? <b>{Math.round((student.compatabilityScore + Number.EPSILON) * 100) / 100}/10</b> : <b>Loading...</b>}
+                          {student.compatabilityScore != undefined ? (
+                            <b>
+                              {Math.round(
+                                (student.compatabilityScore + Number.EPSILON) *
+                                  100
+                              ) / 100}
+                              /10
+                            </b>
+                          ) : (
+                            <b>Loading...</b>
+                          )}
                         </h3>
                       </div>
                       <hr className="border-dashed"></hr>
