@@ -1,6 +1,6 @@
 # Areto
 
-[Description]
+Areto is a data-driven educational matchmaking platform for post-secondary students, addressing the common pain point of forming optimal groups in academic settings.
 
 ## Dev Environment Setup Steps
 
